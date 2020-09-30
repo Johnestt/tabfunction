@@ -37,23 +37,26 @@
     </fieldset>
 </form>
 <?php
-$q = $_POST['fst'];
-$r = $_POST['lst'];
-$e = $_POST['stp'];
 
-if ((isset($q, $r, $e))  && is_numeric($q) && is_numeric($r) && is_numeric($e)) //проверка на ввод данных (пустые ответы и неверные ответы)
+if ((isset($_POST['fst'], $_POST['lst'], $_POST['stp']))  && is_numeric($_POST['fst']) && is_numeric($_POST['lst']) && is_numeric($_POST['stp'])) //проверка на ввод данных (пустые ответы и неверные ответы)
 {
+    $q = $_POST['fst'];
+    $r = $_POST['lst'];
+    $e = $_POST['stp'];
     $w = $q + $r; //создание ограницений по колличеству точек
     $x = $q; //служебная часть, для вычислений
 
     function f($x)
     {
-        if ($x != 0)  { //проверка на деление на 0
+        if ($x != 1)   { //проверка на деление на 0
             $to = 1-pow($x, 3);
             $f = $x/$to; //сама функция
-        } else {
+        }
+
+        else {
             $f = "Деление на 0";
         }
+
         return $f;
     }
 
@@ -66,9 +69,12 @@ if ((isset($q, $r, $e))  && is_numeric($q) && is_numeric($r) && is_numeric($e)) 
             <td>F(x)</td>");
     for ($i = 1; $x <= $w + $e / 4; ++$i, $x = bcadd($x, $e, 1)) { //логика для построения динамической таблицы
         $rez = f($x); //input: 0 (начальная точка) МЕНЬШЕ или РАВНО 0(начальная точка) + 5 (колличество точек) + 1 (колличество точек) /2
-        if ((is_infinite($rez)) or (is_nan($rez)) or (is_null($rez))) {
+        /* Старый метод проверки на деление 0
+        $rezfloat = floatval($rez);
+        if ((is_infinite($rezfloat)) or (is_nan($rezfloat)) or (is_null($rezfloat))) {
             $rez = "Не возможно высчитать (бесконечно)";
         };
+        */
         echo("<tr>
                 <td>$i</td>
                 <td>$x</td>
